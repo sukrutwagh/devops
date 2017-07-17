@@ -1,0 +1,121 @@
+************************ SOFTWARE PRE-REQUISITES ************************
+- VIRTUAL BOX: VirtualBox-5.0.24-108355-Win
+	- INSTALL_HOME=C:\Program Files\Oracle\VirtualBox
+	- VMs=D:\Backup\D drive\Backup\D Drive\Zycus\programs\VirtualBox VMs
+- VAGRANT: vagrant_1.8.4
+	- INSTALL_HOME=C:\HashiCorp\Vagrant\bin\vagrant.exe
+	- Workspace=D:\Backup\D drive\Backup\D Drive\Zycus\programs\Atlas\Vagrant
+- PACKER: 1.0.0
+	- INSTALL_HOME=D:\Backup\D drive\Backup\D Drive\Zycus\programs\Atlas\Packer\packer.exe
+- GIT BASH: git version 2.9.0.windows.1
+	- INSTALL_HOME=D:\Backup\D drive\Backup\D Drive\Zycus\programs\Git\git-bash.exe
+- BENTO: https://github.com/William-Yeh/docker-enabled-vagrant#build-these-boxes-yourself 
+	- INSTALL_HOME=D:\Backup\D drive\Backup\D Drive\Zycus\programs\Atlas\Packer\bento
+- MOBAXTERM: Personal edition v10.2
+	- INSTALL_HOME=D:\Backup\D drive\Backup\D Drive\Zycus\programs\MobaXterm_Portable_v10.2
+- FILEZILLA: 3.26.2
+- WINSCP: 5.5.3
+
+---------- VM Provisioning ----------
+cd D:\Backup\D drive\Backup\D Drive\Zycus\programs\Atlas\Vagrant
+
+D:
+
+mkdir vagrant_getting_started
+
+cd vagrant_getting_started
+
+vagrant init
+
+dir
+
+vagrant box add --name centos-7.3-x86_64 "D:\Backup\D drive\Backup\D Drive\Zycus\programs\Atlas\Packer\bento\builds\centos-7.3.virtualbox.box"
+
+vagrant box list
+
+vagrant up --provider virtualbox
+
+vagrant status
+
+
+
+***** Troubleshooting *****
+Docker for Windows in not compatible with Virtualbox 
+	- uninstall docker for windows
+	- turn off windows features related to hypervisor
+
+Vagrant 1.8.4 is not compatible with oracle virtualbox 5.1
+	- Apply this workaround: https://github.com/mitchellh/vagrant/issues/7588#issuecomment-233035591
+
+---------- Building VM ----------
+
+https://github.com/William-Yeh/docker-enabled-vagrant
+
+cd "D:\Backup\D drive\Backup\D Drive\Zycus\programs\Atlas\Packer"
+
+mkdir build_with_packer
+
+gitbash
+
+git clone https://github.com/William-Yeh/docker-enabled-vagrant.git
+
+cd docker-enabled-vagrant/centos7/
+
+Modify - centos7-docker
+
+cd "D:\Backup\D drive\Backup\D Drive\Zycus\programs\Atlas\Packer\build_with_packer\docker-enabled-vagrant"
+
+git clone https://github.com/chef/bento.git
+
+./copy-bento.sh
+
+cd centos7
+
+** Note: 
+	- Create directory = mkdir packer_cache
+	- Enable packer debugging: set PACKER_LOG=1
+
+packer build -only=virtualbox-iso centos7-docker.json
+
+
+---------- Docker containers ----------
+-Boot the VM with docker
+D:\Backup\D drive\Backup\D Drive\Zycus\programs\Atlas\Vagrant\vagrant_getting_started>vagrant up
+
+docker --version
+docker-machine --version
+docker run hello-world
+
+scp & upload directory: cd /vagrant/boot2docker/images
+cd /vagrant/boot2docker/images
+
+docker build -t friendlyhello .
+
+docker run -p 80:80 friendlyhello
+
+curl http://127.0.0.1:8088/
+
+-- Upgrade Docker ---
+sudo service docker stop
+sudo yum update docker-engine
+sudo service docker start
+docker version
+docker images
+
+docker swarm init
+docker stack deploy -c docker-compose.yml getstartedlab
+docker stack ps getstartedlab
+http://127.0.0.1:8089/
+
+docker stack rm getstartedlab
+
+docker pull meanjs/mean
+
+docker run meanjs/mean
+
+sudo -s
+
+yum -y install elinks
+
+elinks http://localhost:4000
+
