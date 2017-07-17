@@ -2,7 +2,12 @@
 My devops related presentations
 
 Topics covered:
-Virtual Machine
-Vagrant
-Packer
-Docker
+
+- Virtual Machine
+
+- Vagrant
+
+- Packer
+
+- Docker
+
